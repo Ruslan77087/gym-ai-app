@@ -9,12 +9,14 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0e0e11",
     "ios": {
+      "bundleIdentifier": "com.ruslan77087.gymai",
       "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "Камера нужна для распознавания еды по фото."
       }
     },
     "android": {
+      "package": "com.ruslan77087.gymai",
       "adaptiveIcon": {
         "backgroundColor": "#0e0e11",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
