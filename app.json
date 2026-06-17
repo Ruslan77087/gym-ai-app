@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "GymAI",
+    "slug": "gym-ai-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "gymai",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0e0e11",
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Камера нужна для распознавания еды по фото."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0e0e11",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["android.permission.CAMERA"]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0e0e11",
+          "android": {
+            "image": "./assets/images/splash-icon.png",
+            "imageWidth": 120
+          }
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Доступ к галерее нужен для распознавания еды по фото.",
+          "cameraPermission": "Камера нужна для распознавания еды по фото."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
