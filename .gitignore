@@ -42,3 +42,6 @@ example
 /ios
 /android
 server/node_modules/
+
+# AI-сервер: секреты
+server/.env

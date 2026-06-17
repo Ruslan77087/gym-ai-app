@@ -42,14 +42,19 @@ server/           Node-прокси к Claude API (ключ живёт толь�
 
 ## Запуск
 
+> **Windows:** есть пошаговая инструкция — [QUICKSTART.md](./QUICKSTART.md).
+
 ### 1. AI-сервер
 
 ```bash
 cd server
 npm install
-export ANTHROPIC_API_KEY=sk-ant-...   # ключ хранится только на сервере
+cp .env.example .env                   # впиши ANTHROPIC_API_KEY в server/.env
 npm start                              # http://localhost:3000
 ```
+
+Ключ можно задать и переменной окружения `ANTHROPIC_API_KEY` вместо файла `.env`.
+Ключ хранится только на сервере и в git не попадает.
 
 Модель: `claude-sonnet-4-6` (чат и Vision). Эндпоинты: `/api/chat`, `/api/food/photo`,
 `/api/food/parse`, `/api/meal-plan`, `/health`.
