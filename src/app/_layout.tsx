@@ -47,7 +47,6 @@ function RootNavigator() {
       <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
       <Stack.Screen name="workout/active" options={{ gestureEnabled: false }} />
       <Stack.Screen name="exercises" options={{ presentation: 'modal' }} />
-      <Stack.Screen name="food/photo" options={{ presentation: 'modal' }} />
       <Stack.Screen name="food/add" options={{ presentation: 'modal' }} />
     </Stack>
   );

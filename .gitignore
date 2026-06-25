@@ -41,7 +41,3 @@ example
 # generated native folders
 /ios
 /android
-server/node_modules/
-
-# AI-сервер: секреты
-server/.env

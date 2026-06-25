@@ -59,13 +59,6 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => <Ionicons name="restaurant" size={size} color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="coach"
-        options={{
-          title: 'AI-тренер',
-          tabBarIcon: ({ color, size }) => <Ionicons name="sparkles" size={size} color={color} />,
-        }}
-      />
     </Tabs>
   );
 }

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "GymAI",
+    "name": "FitTrack",
     "slug": "gym-ai-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,12 +8,15 @@
     "scheme": "gymai",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0e0e11",
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "themeColor": "#0e0e11"
+    },
     "ios": {
       "bundleIdentifier": "com.ruslan77087.gymai",
-      "supportsTablet": false,
-      "infoPlist": {
-        "NSCameraUsageDescription": "Камера нужна для распознавания еды по фото."
-      }
+      "supportsTablet": false
     },
     "android": {
       "package": "com.ruslan77087.gymai",
@@ -22,8 +25,7 @@
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false,
-      "permissions": ["android.permission.CAMERA"]
+      "predictiveBackGestureEnabled": false
     },
     "plugins": [
       "expo-router",
@@ -36,13 +38,6 @@
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 120
           }
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Доступ к галерее нужен для распознавания еды по фото.",
-          "cameraPermission": "Камера нужна для распознавания еды по фото."
         }
       ]
     ],

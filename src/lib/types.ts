@@ -126,11 +126,6 @@ export interface FoodAnalysis {
   portion_g: number;
 }
 
-export interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
-
 export interface PersonalRecord {
   exercise_id: string;
   weight: number;

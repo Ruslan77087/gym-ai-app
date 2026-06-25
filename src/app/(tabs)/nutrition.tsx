@@ -82,32 +82,10 @@ export default function Nutrition() {
           <MacroTile label="Клетчатка" value={totals.fiber} target={targets.fiber} color={colors.fiber} />
         </View>
 
-        <View style={styles.actionsRow}>
-          <Button
-            title="📷 Сфотографировать"
-            onPress={() => router.push('/food/photo')}
-            style={styles.flex1}
-          />
-          <Button
-            title="+ Добавить"
-            variant="secondary"
-            onPress={() => router.push('/food/add')}
-            style={styles.flex1}
-          />
-        </View>
-
-        <Pressable onPress={() => router.push('/(tabs)/coach')}>
-          <Card style={styles.aiCard}>
-            <Text style={styles.aiEmoji}>✨</Text>
-            <View style={styles.flex1}>
-              <Subtitle style={{ fontSize: 15 }}>AI-нутрициолог</Subtitle>
-              <Muted style={{ fontSize: 12 }}>
-                Спроси, что съесть перед тренировкой, или попроси рацион на день
-              </Muted>
-            </View>
-            <Text style={styles.aiArrow}>→</Text>
-          </Card>
-        </Pressable>
+        <Button
+          title="+ Добавить приём"
+          onPress={() => router.push('/food/add')}
+        />
 
         {MEALS.map((meal) => {
           const mealEntries = entries.filter((e) => e.meal_type === meal.key);
@@ -130,7 +108,6 @@ export default function Nutrition() {
                       <Muted style={{ fontSize: 11 }}>
                         {Math.round(e.portion_g)} г · Б {Math.round(e.protein)} · Ж {Math.round(e.fat)} · У{' '}
                         {Math.round(e.carbs)}
-                        {e.source === 'photo' ? ' · 📷' : e.source === 'voice' ? ' · 🎙' : ''}
                       </Muted>
                     </View>
                     <Text style={styles.entryKcal}>{Math.round(e.calories)}</Text>
@@ -155,11 +132,7 @@ const styles = StyleSheet.create({
   reportsLink: { fontFamily: fonts.semiBold, fontSize: 14, color: colors.accent },
   ringCard: { alignItems: 'center', gap: spacing.s },
   tilesRow: { flexDirection: 'row', gap: spacing.m },
-  actionsRow: { flexDirection: 'row', gap: spacing.m },
   flex1: { flex: 1 },
-  aiCard: { flexDirection: 'row', alignItems: 'center', gap: spacing.m, borderColor: colors.accent },
-  aiEmoji: { fontSize: 24 },
-  aiArrow: { fontFamily: fonts.bold, fontSize: 18, color: colors.accent },
   mealHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',

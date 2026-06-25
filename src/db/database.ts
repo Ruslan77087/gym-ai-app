@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import { Platform } from 'react-native';
 import { EXERCISES } from '@/data/exercises';
 import { buildFoodDatabase } from '@/data/foods';
 import {
@@ -20,9 +21,11 @@ export function getDb(): SQLite.SQLiteDatabase {
 
 export async function initDatabase(): Promise<void> {
   const d = getDb();
+  // WAL ускоряет запись на нативе. В вебе (OPFS-бэкенд wa-sqlite) WAL не поддерживается — пропускаем.
+  if (Platform.OS !== 'web') {
+    await d.execAsync('PRAGMA journal_mode = WAL;').catch(() => {});
+  }
   await d.execAsync(`
-    PRAGMA journal_mode = WAL;
-
     CREATE TABLE IF NOT EXISTS exercises (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,

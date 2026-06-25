@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
@@ -10,10 +9,9 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, Chip, Muted, Subtitle, Title } from '@/components/ui';
-import { parseFoodText } from '@/lib/ai';
+import { Button, Chip, Muted, Title } from '@/components/ui';
 import * as db from '@/db/database';
-import { FoodAnalysis, FoodItem, MealType } from '@/lib/types';
+import { FoodItem, MealType } from '@/lib/types';
 import { colors, fonts, radius, spacing } from '@/theme';
 
 const MEALS: { key: MealType; label: string }[] = [
@@ -37,9 +35,6 @@ export default function FoodAdd() {
   const [selected, setSelected] = useState<FoodItem | null>(null);
   const [grams, setGrams] = useState('150');
   const [meal, setMeal] = useState<MealType>(guessMeal());
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiError, setAiError] = useState<string | null>(null);
-  const [aiResult, setAiResult] = useState<FoodAnalysis | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -64,30 +59,8 @@ export default function FoodAdd() {
         fiber: selected.fiber * k,
         portion_g: g,
       },
-      'text'
+      'manual'
     );
-    router.back();
-  };
-
-  // Голос/текст: системная диктовка клавиатуры превращает речь в текст,
-  // Claude разбирает описание («съел тарелку гречки с курицей 200г») в КБЖУ
-  const askAi = async () => {
-    if (!query.trim() || aiLoading) return;
-    setAiError(null);
-    setAiLoading(true);
-    setSelected(null);
-    try {
-      setAiResult(await parseFoodText(query.trim()));
-    } catch (e) {
-      setAiError(e instanceof Error ? e.message : 'AI недоступен');
-    } finally {
-      setAiLoading(false);
-    }
-  };
-
-  const saveAiResult = async () => {
-    if (!aiResult) return;
-    await db.addNutritionEntry(db.todayStr(), meal, aiResult, 'voice');
     router.back();
   };
 
@@ -104,17 +77,10 @@ export default function FoodAdd() {
         <TextInput
           style={styles.search}
           value={query}
-          onChangeText={(t) => {
-            setQuery(t);
-            setAiResult(null);
-          }}
-          placeholder="Поиск или опиши голосом: «тарелка гречки с курицей 200 г»"
+          onChangeText={setQuery}
+          placeholder="Поиск по базе продуктов: «гречка», «куриная грудка»…"
           placeholderTextColor={colors.textMuted}
-          multiline
         />
-        <Muted style={{ fontSize: 11, marginTop: 6 }}>
-          🎙 Для голосового ввода нажми микрофон на клавиатуре и продиктуй — затем «Спросить AI».
-        </Muted>
       </View>
 
       <View style={styles.mealRow}>
@@ -123,30 +89,6 @@ export default function FoodAdd() {
         ))}
       </View>
 
-      {query.trim().length > 2 && !aiResult && (
-        <View style={styles.aiAskWrap}>
-          <Button
-            title={aiLoading ? 'Анализирую…' : '✨ Спросить AI (свободное описание)'}
-            variant="secondary"
-            onPress={askAi}
-            loading={aiLoading}
-          />
-          {aiError && <Muted style={{ color: colors.danger }}>{aiError}</Muted>}
-        </View>
-      )}
-
-      {aiResult && (
-        <Card style={styles.aiResultCard}>
-          <Subtitle style={{ fontSize: 15 }}>{aiResult.dish}</Subtitle>
-          <Text style={styles.aiKcal}>{Math.round(aiResult.calories)} ккал</Text>
-          <Muted>
-            {Math.round(aiResult.portion_g)} г · Б {Math.round(aiResult.protein)} · Ж{' '}
-            {Math.round(aiResult.fat)} · У {Math.round(aiResult.carbs)}
-          </Muted>
-          <Button title="Записать в дневник" onPress={saveAiResult} style={{ marginTop: spacing.m }} />
-        </Card>
-      )}
-
       <FlatList
         data={results}
         keyExtractor={(f) => String(f.id)}
@@ -154,10 +96,7 @@ export default function FoodAdd() {
         keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => (
           <Pressable
-            onPress={() => {
-              setSelected(item);
-              setAiResult(null);
-            }}
+            onPress={() => setSelected(item)}
             style={[styles.row, selected?.id === item.id && styles.rowSelected]}
           >
             <View style={styles.flex1}>
@@ -225,9 +164,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.l,
     paddingVertical: spacing.m,
   },
-  aiAskWrap: { paddingHorizontal: spacing.l, gap: spacing.s, marginBottom: spacing.s },
-  aiResultCard: { marginHorizontal: spacing.l, borderColor: colors.accent, marginBottom: spacing.s },
-  aiKcal: { fontFamily: fonts.extraBold, fontSize: 26, color: colors.accent, marginVertical: 2 },
   list: { padding: spacing.l, gap: spacing.s, paddingBottom: 120 },
   row: {
     flexDirection: 'row',
